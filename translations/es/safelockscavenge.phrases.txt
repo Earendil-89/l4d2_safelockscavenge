@@ -1,0 +1,216 @@
+"Phrases"
+{
+	"SLS_ComGameOnly"
+	{
+		"es"	"Este comando solo puede ser utilizado en el juego."
+	}
+	"SLS_ComEdOnly"
+	{
+		"es"	"Este comando solo puede ser utilizado en modo editor."
+	}
+	"SLS_CmdEdUsage"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"es"	"Uso: {1}sm_sls_editor {2}<0/1>.{3} 0 = salir del modo editor, 1 = entrar en modo editor."
+	}
+	"SLS_EdFailNoDoor"
+	{
+		"es"	"No se ha encontrado la puerta del refugio. No se puede entrar en modo editor."
+	}
+	"SLS_LoadSuccess"
+	{
+		"es"	"Configuración del mapa cargada correctamente."
+	}
+	"SLS_LoadFail"
+	{
+		"es"	"No se pudo cargar la configuración del mapa."
+	}
+	"SLS_SaveSuccess"
+	{
+		"es"	"Configuración del mapa guardada correctamente."
+	}
+	"SLS_SaveFail"
+	{
+		"es"	"Hubo un error guardando la configuración del mapa."
+	}
+	"SLS_SpawnFail"
+	{
+		"es"	"No puedes crear una entidad aquí, inténtalo en otro sitio."
+	}
+	"SLS_CmdModelUsage"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"es"	"Uso: {1}sm_sls_genmodel {2}<valor>.{3} Valores válidos: 1-4."
+	}
+	"SLS_GenModelSuccess"
+	{
+		"es"	"Modelo del generador cambiado correctamente."
+	}
+	"SLS_NoCenterNozzle"
+	{
+		"es"	"Este modelo de generador no acepta boquilla en el centro, cambiándola al lado derecho."
+	}
+	"SLS_ComNozUsage"
+	{
+		"#format" "{1:s},{2:s},{3:s}"
+		"es"	"Uso: {1}sm_sls_nozzlepos {2}<valor>{3}. Los valores válidos son: -1 (izquierda), 0 (centro), 1 (derecha)."
+	}
+	"SLS_NozLeft"
+	{
+		"#format"	"{1:s},{2:s}"
+		"es"	"Boquilla situada a la {1}izquierda{2}."
+	}
+	"SLS_NozRight"
+	{
+		"#format"	"{1:s},{2:s}"
+		"es"	"Boquilla situada a la {1}derecha{2}."
+	}
+	"SLS_NozCent"
+	{
+		"#format"	"{1:s},{2:s}"
+		"es"	"Boquilla situada en el {1}centro{2}."
+	}
+	"SLS_NozNotCen"
+	{
+		"es"	"Este modelo de generador no permite boquilla en el centro."
+	}
+	"SLS_CanLimit"
+	{
+		"es"	"Límite de latas de gasolina alcanzado."
+	}
+	"SLS_CanSpawn"
+	{
+		"#format"	"{1:s},{2:s},{3:i},{4:s}"
+		"es"	"Creada lata de gasolina {1}[{2}{3}/32{4}]"
+	}
+	"SLS_MarkSuccess"
+	{
+		"es"	"Entidad marcada correctamente."
+	}
+	"SLS_MarkFail"
+	{
+		"es"	"No se pudo marcar la entidad."
+	}
+	"SLS_UnmarkSuccess"
+	{
+		"es"	"Entidad desmarcada corréctamente."
+	}
+	"SLS_DeleteSuccess"
+	{
+		"es"	"Entidad eliminada corréctamente."
+	}
+	"SLS_DeleteFail"
+	{
+		"es"	"Tienes que marcar una entidad para borrarla."
+	}
+	"SLS_CmdMoveUsage"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"es"	"Uso: {1}sm_sls_move {2}<eje> <cantidad>{3}."
+	}
+	"SLS_MoveFail"
+	{
+		"es"	"Tienes que marcar una entidad para moverla."
+	}
+	"SLS_CmdRotUsage"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"es"	"Uso: {1}sm_sls_rotate {2}<eje> <cantidad>{3}."
+	}
+	"SLS_CmdRotFail"
+	{
+		"es"	"Tienes que marcar una entidad para rotarla."
+	}
+	"SLS_Wiped"
+	{
+		"es"	"Eliminadas todas las entidades."
+	}
+	"SLS_AnounceScavStart"
+	{
+		"es"	"La puerta del refugio está bloqueada. Llenad el generador para desbloquearla."
+	}
+	"SLS_AnounceScavEnd"
+	{
+		"es"	"Generador lleno, puerta del refugio desbloqueada."
+	}
+	"SLSM_Title"
+	{
+		"es"	"SLS Editor"
+	}
+	"SLSM_EnableEd"
+	{
+		"en"	"Entrar en modo editor"
+	}
+	"SLSM_SpawnGen"
+	{
+		"es"	"Crear generador"
+	}
+	"SLSM_SpawnCan"
+	{
+		"es"	"Crear lata de gasolina"
+	}
+	"SLSM_Mark"
+	{
+		"es"	"Marcar entidad"
+	}
+	"SLSM_Unmark"
+	{
+		"es"	"Desmarcar entidad"
+	}
+	"SLSM_MarkClose"
+	{
+		"es"	"Marcar la entidad más próxima"
+	}
+	"SLSM_Delete"
+	{
+		"es"	"Borrar entidad"
+	}
+	"SLSM_Move"
+	{
+		"es"	"Mover entidad"
+	}
+	"SLSM_Rotate"
+	{
+		"es"	"Rotar entidad"
+	}
+	"SLSM_GenModel"
+	{
+		"es"	"Cambiar modelo del generador"
+	}
+	"SLSM_NozzlePos"
+	{
+		"es"	"Cambiar posición de la boquilla"
+	}
+	"SLSM_Wipe"
+	{
+		"es"	"Borrar todas las entidades"
+	}
+	"SLSM_Save"
+	{
+		"es"	"Guardar la configuración del mapa"
+	}
+	"SLSM_Load"
+	{
+		"es"	"Cargar la configuración del mapa"
+	}
+	"SLSM_DisableEd"
+	{
+		"es"	"Salir del modo editor"
+	}
+	"SLSM_Model"
+	{
+		"es"	"Modelo"
+	}
+	"SLSM_Left"
+	{
+		"es"	"Izquierda"
+	}
+	"SLSM_Center"
+	{
+		"es"	"Centro"
+	}
+	"SLSM_Right"
+	{
+		"es"	"Derecha"
+	}
+}
