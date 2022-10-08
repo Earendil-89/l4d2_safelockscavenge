@@ -1,26 +1,28 @@
-/*============================================================================================
-							[L4D2] Saferoom Lock: Scavenge
-----------------------------------------------------------------------------------------------
-*	Author	:	Eärendil
-*	Descrp	:	Players must complete a small scavenge event to unlock the saferoom
-*	Version	:	1.2.1
-*	Link	:	https://forums.alliedmods.net/showthread.php?t=333086
-----------------------------------------------------------------------------------------------
-*	Table of contents:
-		- Sourcemod & Client Forwards													(96)
-		- ConVars																		(191)
-		- Events																		(302)
-		- Admin Commands																(341)
-		- Menus																			(844)
-		- Editor functions																(1119)
-		- Other functions and Timers													(1857)
-		- Changelog																		(2018)
-----------------------------------------------------------------------------------------------
-* NOTE: Silver's found a better method to block the door with spawnflags:
-	SetEntProp(doorentity, Prop_Send, "m_spawnflags", 36864); // Prevent +USE + Door silent
-	I will use that in a future version when scavenge is started and plugin doesn't need to 
-	keep the door entity output hooked, right now I'm releasing this version for compatibility
-==============================================================================================*/
+/**
+ * ======================================================================================== *
+ *                             [L4D2] Saferoom Lock: Scavenge                               *
+ * ---------------------------------------------------------------------------------------- *
+ *  Author      :   Eärendil                                                                *
+ *  Descrp      :   Players must complete a small scavenge event to unlock the saferoom     *
+ *  Version     :   1.2.2                                                                   *
+ *  Link        :   https://forums.alliedmods.net/showthread.php?t=333086                   *
+ * ======================================================================================== *
+ *                                                                                          *
+ *  CopyRight (C) 2022 Eduardo "Eärendil" Chueca                                            *
+ * ---------------------------------------------------------------------------------------- *
+ *  This program is free software; you can redistribute it and/or modify it under the       *
+ *  terms of the GNU General Public License, version 3.0, as published by the Free          *
+ *  Software Foundation.                                                                    *
+ *                                                                                          *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY         *
+ *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A         *
+ *  PARTICULAR PURPOSE. See the GNU General Public License for more details.                *
+ *                                                                                          *
+ *  You should have received a copy of the GNU General Public License along with            *
+ *  this program. If not, see <http://www.gnu.org/licenses/>.                               *
+ * ======================================================================================== *
+ */
+ 
 #pragma		semicolon 1
 #pragma		newdecls required
 #include	<sourcemod>
@@ -54,7 +56,7 @@
 #define CL_LIGHTGREEN	"\x03"
 #define CL_GREEN		"\x05"
 
-#define PLUGIN_VERSION	"1.2.1"
+#define PLUGIN_VERSION	"1.2.2"
 
 
 bool g_bAllow, g_bPluginOn, g_bAllowGamemode, g_bRoundStart, g_bPlayerSpawn, g_bSpawned, g_bEditMode, g_bInTime, g_bLoaded;
@@ -320,7 +322,7 @@ public void Event_Player_Spawn(Event event, const char[] name, bool dontBroadcas
 public void Event_Round_End(Event event, const char[] name, bool dontBroadcast)
 {
 	// This will prevent the plugin to crash scavenge finales in dead center, the passing and the last stand
-	if (StrEqual(g_sMapName, "c1m4_atrium", false) || StrEqual(g_sMapName, "c6m3_port", false) || StrEqual(g_sMapName, "c14m2_lighthouse", false))
+	if( StrEqual(g_sMapName, "c1m4_atrium", false) || StrEqual(g_sMapName, "c6m3_port", false) || StrEqual(g_sMapName, "c14m2_lighthouse", false) )
 		return;
 
 	g_bPlayerSpawn = false;
@@ -332,8 +334,13 @@ public void Event_Round_End(Event event, const char[] name, bool dontBroadcast)
 
 	// Kill scavenge item spawns or they remain for the next round. Yeah, more bugs!
 	int i = -1;
-	while ((i = FindEntityByClassname(i, "weapon_scavenge_item_spawn")) != -1)
-		AcceptEntityInput(i, "Kill");
+	while( (i = FindEntityByClassname(i, "weapon_scavenge_item_spawn")) != -1 )
+	{
+		char sName[32];
+		GetEntPropString(i, Prop_Data, "m_iName", sName, sizeof(sName));
+		if( StrEqual(sName, TN_GASCAN) )
+			AcceptEntityInput(i, "Kill");
+	}
 			
 	g_iScavStatus = 0;
 	g_iPanicCount = 0;
@@ -1273,7 +1280,7 @@ void DeleteScavEnts()
 	while ((i = FindEntityByClassname(i, "prop_dynamic")) != -1)
 	{
 		GetEntPropString(i, Prop_Data, "m_iName", sName, sizeof(sName));
-		if (StrEqual(sName, TN_GEN, false) || StrEqual(sName, TN_NOZZLE, false) || StrEqual(sName, TN_GASCAN, false))
+		if( StrEqual(sName, TN_GEN) || StrEqual(sName, TN_NOZZLE) )
 			AcceptEntityInput(i, "Kill");
 	}
 }
@@ -1283,11 +1290,11 @@ void WipeFakeEnts()
 	g_iCurrEnt = 0;
 	g_iCanEditorCount = 0;
 	int i = -1;
-	while ((i = FindEntityByClassname(i, "prop_dynamic")) != -1)	//For some reason prop_dynamic_override is detected as prop_dynamic
+	while( (i = FindEntityByClassname(i, "prop_dynamic")) != -1 )	//For some reason prop_dynamic_override is detected as prop_dynamic
 	{
 		char sName[32];
 		GetEntPropString(i, Prop_Data, "m_iName", sName, sizeof(sName));
-		if (StrEqual(sName, TN_EDITGEN, false) || StrEqual(sName, TN_EDITCAN))
+		if( StrEqual(sName, TN_EDITGEN) || StrEqual(sName, TN_EDITCAN) )
 			AcceptEntityInput(i, "Kill");
 	}
 }
@@ -1298,7 +1305,7 @@ bool DeleteFakeEnt()
 		return false;
 	char sName[32];
 	GetEntPropString(g_iCurrEnt, Prop_Data, "m_iName", sName, sizeof(sName));
-	if (StrEqual(sName, TN_EDITCAN, false))
+	if( StrEqual(sName, TN_EDITCAN) )
 		g_iCanEditorCount--;
 
 	AcceptEntityInput(g_iCurrEnt, "Kill");
@@ -1315,14 +1322,14 @@ bool SelectEntity(int client)
 	GetClientEyeAngles(client, vAng);
 	entity = TR_HitEntity(client);
 
-	if (!IsValidEntity(entity) || entity == 0)
+	if( !IsValidEntity(entity) || entity == 0 )
 		return false;
 
 	char sName[32];
 	GetEntPropString(entity, Prop_Data, "m_iName", sName, sizeof(sName));
-	if (StrEqual(sName, TN_EDITGEN, false) || StrEqual(sName, TN_EDITCAN, false))
+	if( StrEqual(sName, TN_EDITGEN) || StrEqual(sName, TN_EDITCAN) )
 	{
-		if (IsValidEntity(g_iCurrEnt) && g_iCurrEnt != 0)
+		if( IsValidEntity(g_iCurrEnt) && g_iCurrEnt != 0 )
 			SetEntProp(g_iCurrEnt, Prop_Send, "m_glowColorOverride", GetColorInt(255, 255, 255));
 
 		g_iCurrEnt = EntIndexToEntRef(entity);
@@ -1339,23 +1346,23 @@ bool MarkClosestEnt(int client)
 	int iEnt = -1, i = -1;
 	char sName[32];
 	GetClientEyePosition(client, vClient);
-	while ((i = FindEntityByClassname(i, "prop_dynamic")) != -1)
+	while( (i = FindEntityByClassname(i, "prop_dynamic")) != -1 )
 	{
 		GetEntPropString(i, Prop_Data, "m_iName", sName, sizeof(sName));
-		if (!StrEqual(sName, TN_EDITCAN, false) && !StrEqual(sName, TN_EDITGEN, false))
+		if( !StrEqual(sName, TN_EDITCAN) && !StrEqual(sName, TN_EDITGEN) )
 			continue;
 			
 		GetEntPropVector(i, Prop_Send, "m_vecOrigin", vPos);
 		float distance = GetVectorDistance(vPos, vClient, true);
-		if (fMin < 0.0 || distance < fMin)
+		if( fMin < 0.0 || distance < fMin )
 		{
 			fMin = distance;
 			iEnt = i;
 		}
 	}
-	if (iEnt != -1)
+	if( iEnt != -1 )
 	{
-		if (g_iCurrEnt != -1)
+		if( g_iCurrEnt != -1 )
 			SetEntProp(g_iCurrEnt, Prop_Send, "m_glowColorOverride", GetColorInt(255, 255, 255));
 			
 		g_iCurrEnt = EntIndexToEntRef(iEnt);
@@ -1680,40 +1687,40 @@ bool InitializeScavenge()
 	// Load gascans
 	char sPath[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, sPath, sizeof(sPath), CFG_FILE);
-	if (!FileExists(sPath))
+	if( !FileExists(sPath) )
 		return false;
 		
 	KeyValues hKV = new KeyValues("settings");
-	if (!hKV.ImportFromFile(sPath))
+	if( !hKV.ImportFromFile(sPath) )
 	{
 		delete hKV;
 		return false;
 	}
-	if (!hKV.JumpToKey(g_sMapName))
+	if( !hKV.JumpToKey(g_sMapName) )
 	{
 		delete hKV;
 		return false;
 	}
 	int iGascanCount = 0;
 	iGascanCount = hKV.GetNum("gascancount");
-	if (iGascanCount == 0)
+	if( iGascanCount == 0 )
 	{
 		delete hKV;
 		return false;	
 	}
 	// Create a dynamic array to randomize gascan spawns
 	ArrayList hArray = CreateArray(1, 0);
-	for (int i = 0; i < iGascanCount; i++)
+	for( int i = 0; i < iGascanCount; i++ )
 	{
 		hArray.Push(i);
 	}
-	if (iGascanCount > g_iGascanAm)
+	if( iGascanCount > g_iGascanAm )
 		iGascanCount = g_iGascanAm;	// Allow to spawn only the gascans set by convar
 
 	hArray.Sort(Sort_Random, Sort_Integer);
 
 	// Spawn gascans randomly	
-	for (int i = 0; i < iGascanCount; i++)
+	for( int i = 0; i < iGascanCount; i++ )
 	{
 		char sKey[16], sBuffer[8];
 		float vPos[3], vAng[3];
@@ -1757,6 +1764,7 @@ void SpawnGascan(float vPos[3], float vAng[3])
 		IntToString(GetRandomInt(1,3), g_sGascanSkin, sizeof(g_sGascanSkin));
 
 	int gascan = CreateEntityByName("weapon_scavenge_item_spawn");
+	DispatchKeyValue(gascan, "targetname", TN_GASCAN);
 	DispatchKeyValue(gascan, "glowstate", "3");
 	DispatchKeyValue(gascan, "solid", "6");
 	DispatchKeyValue(gascan, "spawnflags", "1");
@@ -1971,13 +1979,13 @@ public Action PanicLoop_Timer(Handle timer)
 
 public Action MainSpawn_Timer(Handle timer)
 {
-	if (!g_bPluginOn)
+	if( !g_bPluginOn )
 		return;
 		
-	if (g_bSpawned) 
+	if( g_bSpawned )
 		return;
 		
-	if (!InitializeRound())
+	if( !InitializeRound() )
 	{
 		PrintToServer("Plugin can't spawn scavenge entities, plugin will not work.");
 		return;
@@ -1987,13 +1995,13 @@ public Action MainSpawn_Timer(Handle timer)
 
 public Action FirstExecution_Timer(Handle timer)
 {
-	if (!g_bPluginOn)
+	if( !g_bPluginOn )
 		return;
 		
-	if (g_bSpawned)
+	if( g_bSpawned )
 		return;
 
-	if (!InitializeRound())
+	if( !InitializeRound() )
 	{
 		PrintToServer("Plugin can't spawn scavenge entities, plugin will not work.");
 		return;
@@ -2021,22 +2029,24 @@ void CallForward(bool locked)
 /*============================================================================================
 									Changelog
 ----------------------------------------------------------------------------------------------
-* 1.0	(18-Jun-2021)
-	- Initial release.
-* 1.1	(20-Jun-2021)
-	- Fixed error with reading cfg file, thanks to VladimirTk for pointing the bug.
-	- Saferoom door now is detected by its distance to the generator (prevents bugs).
-	- Plugin can force panic events when scavenge starts (new ConVar).
-* 1.1.1 (24-Jun-2021)
-	- Fixed an error in spanish translation causing some editor menu options to be 
-		displayed in spanish.
-	- Deleted unused functions.
+* 1.2.2 (08-Oct-2022)
+	- Fixed problems with custom maps/addons that created more scavenge events, deleting their entities.
+* 1.2.1 (20-Jul-2021)
+	- Fixed bug on Dead Center, The Passing and The Last Stand finales, where map scavenges 
+		crashed after round restart.
 * 1.2 (05-Jul-2021)
 	- Saferoom door outputs are unhooked when scavenge ends.
 	- Fixed compatibility with Silvers plugin [L4D & L4D2] Saferoom Door Spam Protection 1.11+
 	- Thanks to GL_INS for reporting and testing.
     - Thanks to Silvers for support and showing and helping with compatibility.
-* 1.2.1 (20-Jul-2021)
-	- Fixed bug on Dead Center, The Passing and The Last Stand finales, where map scavenges 
-		crashed after round restart.
+* 1.1.1 (24-Jun-2021)
+	- Fixed an error in spanish translation causing some editor menu options to be 
+		displayed in spanish.
+* 1.1	(20-Jun-2021)
+	- Fixed error with reading cfg file, thanks to VladimirTk for pointing the bug.
+	- Saferoom door now is detected by its distance to the generator (prevents bugs).
+	- Plugin can force panic events when scavenge starts (new ConVar).
+	- Deleted unused functions.
+* 1.0	(18-Jun-2021)
+	- Initial release.
 ==============================================================================================*/
