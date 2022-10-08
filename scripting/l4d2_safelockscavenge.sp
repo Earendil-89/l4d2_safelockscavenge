@@ -192,16 +192,16 @@ public void OnMapEnd()
 //==========================================================================================
 //										ConVars
 //==========================================================================================
-public void CVarChange_Enable(Handle convar, const char[] oldValue, const char[] newValue)
+void CVarChange_Enable(Handle convar, const char[] oldValue, const char[] newValue)
 {
 	SwitchPlugin();
 }
 
-public void CVarChange_CVars(Handle convar, const char[] oldValue, const char[] newValue)
+void CVarChange_CVars(Handle convar, const char[] oldValue, const char[] newValue)
 {
 	GetCVars();
 }
-public void CVarChange_Colors(Handle convar, const char[] oldValue, const char[] newValue)
+void CVarChange_Colors(Handle convar, const char[] oldValue, const char[] newValue)
 {
 	GetColors();
 }
@@ -247,7 +247,7 @@ void GetGamemode()
 	}
 }
 
-public void OnGamemode(const char[] output, int caller, int activator, float delay)
+void OnGamemode(const char[] output, int caller, int activator, float delay)
 {
 	if( strcmp(output, "OnCoop") == 0 )
 		g_bAllowGamemode = true;
@@ -303,7 +303,7 @@ void GetColors()
 //==========================================================================================
 //									Events
 //==========================================================================================
-public void Event_Round_Start(Event event, const char[] name, bool dontBroadcast)
+void Event_Round_Start(Event event, const char[] name, bool dontBroadcast)
 {
 	if (g_bPlayerSpawn && !g_bRoundStart)
 		CreateTimer(1.0, MainSpawn_Timer, _, TIMER_FLAG_NO_MAPCHANGE);
@@ -311,7 +311,7 @@ public void Event_Round_Start(Event event, const char[] name, bool dontBroadcast
 	g_bRoundStart = true;
 }
 
-public void Event_Player_Spawn(Event event, const char[] name, bool dontBroadcast)
+void Event_Player_Spawn(Event event, const char[] name, bool dontBroadcast)
 {
 	if (!g_bPlayerSpawn && g_bRoundStart)
 		CreateTimer(1.0, MainSpawn_Timer, _, TIMER_FLAG_NO_MAPCHANGE);
@@ -319,7 +319,7 @@ public void Event_Player_Spawn(Event event, const char[] name, bool dontBroadcas
 	g_bPlayerSpawn = true;
 }
 
-public void Event_Round_End(Event event, const char[] name, bool dontBroadcast)
+void Event_Round_End(Event event, const char[] name, bool dontBroadcast)
 {
 	// This will prevent the plugin to crash scavenge finales in dead center, the passing and the last stand
 	if( StrEqual(g_sMapName, "c1m4_atrium", false) || StrEqual(g_sMapName, "c6m3_port", false) || StrEqual(g_sMapName, "c14m2_lighthouse", false) )
@@ -351,7 +351,7 @@ public void Event_Round_End(Event event, const char[] name, bool dontBroadcast)
 //========================================================================================
 //									Admin Commands
 //==========================================================================================
-public Action AdmToggleEditor(int client, int args)
+Action AdmToggleEditor(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -388,7 +388,7 @@ public Action AdmToggleEditor(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmSaveSpawns(int client, int args)
+Action AdmSaveSpawns(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -410,7 +410,7 @@ public Action AdmSaveSpawns(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmSpawnGen(int client, int args)
+Action AdmSpawnGen(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -460,7 +460,7 @@ public Action AdmSpawnGen(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmGenModel(int client, int args)
+Action AdmGenModel(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -501,7 +501,7 @@ public Action AdmGenModel(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmNozzlePos(int client, int args)
+Action AdmNozzlePos(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -589,7 +589,7 @@ int SetNozzlePos(int value)
 	return 0;
 }
 
-public Action AdmSpawnCan(int client, int args)
+Action AdmSpawnCan(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -623,7 +623,7 @@ public Action AdmSpawnCan(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmMarkEnt(int client, int args)
+Action AdmMarkEnt(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -663,7 +663,7 @@ public Action AdmMarkEnt(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmUnmarkEnt(int client, int args)
+Action AdmUnmarkEnt(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -688,7 +688,7 @@ public Action AdmUnmarkEnt(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmDeleteEnt(int client, int args)
+Action AdmDeleteEnt(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -712,7 +712,7 @@ public Action AdmDeleteEnt(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmMovEnt(int client, int args)
+Action AdmMovEnt(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -753,7 +753,7 @@ public Action AdmMovEnt(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmRotEnt(int client, int args)
+Action AdmRotEnt(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -794,7 +794,7 @@ public Action AdmRotEnt(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmWipeEnts(int client, int args)
+Action AdmWipeEnts(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -814,7 +814,7 @@ public Action AdmWipeEnts(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmLoadEnts(int client, int args)
+Action AdmLoadEnts(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -835,7 +835,7 @@ public Action AdmLoadEnts(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action AdmMenu(int client, int args)
+Action AdmMenu(int client, int args)
 {
 	if (!g_bPluginOn)
 		return Plugin_Handled;
@@ -957,7 +957,7 @@ void GenerateMenus(int client)
 	}
 }
 
-public int MenuPreEditHandler(Menu menu, MenuAction action, int client, int index)
+int MenuPreEditHandler(Menu menu, MenuAction action, int client, int index)
 {
 	if (action == MenuAction_Select)
 	{
@@ -969,16 +969,17 @@ public int MenuPreEditHandler(Menu menu, MenuAction action, int client, int inde
 		else
 		{
 			PrintToChat(client, "%s %t", CHAT_TAG, "SLS_EdFailNoDoor");
-			return;
+			return 0;
 		}	
 		EnableEditorMode();
 		if (LoadAllEditorEnts()) PrintToChat(client, "%s %t", CHAT_TAG, "SLS_LoadSuccess");
 		else PrintToChat(client, "%s %t", CHAT_TAG, "SLS_LoadFail");
 		g_hMenu.Display(client, MENU_TIME_FOREVER);
 	}
+	return 0;
 }
 
-public int MenuEditorHandler(Menu menu, MenuAction action, int client, int index)
+int MenuEditorHandler(Menu menu, MenuAction action, int client, int index)
 {
 	if (action == MenuAction_Select)
 	{
@@ -1041,9 +1042,10 @@ public int MenuEditorHandler(Menu menu, MenuAction action, int client, int index
 			case 13: DisableEditorMode();
 		}
 	}
+	return 0;
 }
 
-public int MenuAnglesHandler(Menu menu, MenuAction action, int client, int index)
+int MenuAnglesHandler(Menu menu, MenuAction action, int client, int index)
 {
 	if (action == MenuAction_Select)
 	{
@@ -1064,9 +1066,11 @@ public int MenuAnglesHandler(Menu menu, MenuAction action, int client, int index
 	}
 	if (action == MenuAction_Cancel && index ==  MenuCancel_ExitBack)
 		g_hMenu.Display(client, MENU_TIME_FOREVER);
+		
+	return 0;
 }
 
-public int MenuPositionHandler(Menu menu, MenuAction action, int client, int index)
+int MenuPositionHandler(Menu menu, MenuAction action, int client, int index)
 {
 	if (action == MenuAction_Select)
 	{
@@ -1087,9 +1091,11 @@ public int MenuPositionHandler(Menu menu, MenuAction action, int client, int ind
 	}
 	if (action == MenuAction_Cancel && index ==  MenuCancel_ExitBack)
 		g_hMenu.Display(client, MENU_TIME_FOREVER);
+		
+	return 0;
 }
 
-public int MenuModelHandler(Menu menu, MenuAction action, int client, int index)
+int MenuModelHandler(Menu menu, MenuAction action, int client, int index)
 {
 	if (action == MenuAction_Select)
 	{
@@ -1106,9 +1112,11 @@ public int MenuModelHandler(Menu menu, MenuAction action, int client, int index)
 	}
 	if (action == MenuAction_Cancel && index ==  MenuCancel_ExitBack)
 		g_hMenu.Display(client, MENU_TIME_FOREVER);
+		
+	return 0;
 }
 
-public int MenuNozzleHandler(Menu menu, MenuAction action, int client, int index)
+int MenuNozzleHandler(Menu menu, MenuAction action, int client, int index)
 {
 	if (action == MenuAction_Select)
 	{
@@ -1124,6 +1132,8 @@ public int MenuNozzleHandler(Menu menu, MenuAction action, int client, int index
 	}
 	if (action == MenuAction_Cancel && index ==  MenuCancel_ExitBack)
 		g_hMenu.Display(client, MENU_TIME_FOREVER);
+		
+	return 0;
 }
 
 //==========================================================================================
@@ -1969,54 +1979,58 @@ void ForcePanicEvent()
 		CreateTimer(80.0, PanicLoop_Timer, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-public Action PanicLoop_Timer(Handle timer)
+Action PanicLoop_Timer(Handle timer)
 {
 	if (g_iScavStatus != 1)
-		return;
+		return Plugin_Stop;
 
 	ForcePanicEvent();
+	return Plugin_Stop;
 }
 
-public Action MainSpawn_Timer(Handle timer)
+Action MainSpawn_Timer(Handle timer)
 {
 	if( !g_bPluginOn )
-		return;
+		return Plugin_Stop;
 		
 	if( g_bSpawned )
-		return;
+		return Plugin_Stop;
 		
 	if( !InitializeRound() )
 	{
 		PrintToServer("Plugin can't spawn scavenge entities, plugin will not work.");
-		return;
+		return Plugin_Stop;
 	}
 	g_bSpawned = true;
+	return Plugin_Stop;
 }
 
-public Action FirstExecution_Timer(Handle timer)
+Action FirstExecution_Timer(Handle timer)
 {
 	if( !g_bPluginOn )
-		return;
+		return Plugin_Stop;
 		
 	if( g_bSpawned )
-		return;
+		return Plugin_Stop;
 
 	if( !InitializeRound() )
 	{
 		PrintToServer("Plugin can't spawn scavenge entities, plugin will not work.");
-		return;
+		return Plugin_Stop;
 	}
-	g_bSpawned = true;	
+	g_bSpawned = true;
+	return Plugin_Stop;	
 }
 
 // Stop previous bot command and allow AI to take control over the bot
-public Action BotCommand_Timer(Handle timer, int bot)
+Action BotCommand_Timer(Handle timer, int bot)
 {
 	g_hBotTimer[bot] = null;
 	char sBuffer[96];
 	Format (sBuffer, sizeof(sBuffer), "CommandABot( { cmd = 3, bot = GetPlayerFromUserID(%i) } )", GetClientUserId(bot));
 	SetVariantString(sBuffer);
 	AcceptEntityInput(bot, "RunScriptCode");	
+	return Plugin_Stop;
 }
 
 void CallForward(bool locked)
