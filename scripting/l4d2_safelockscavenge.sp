@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------------------- *
  *  Author      :   Eärendil                                                                *
  *  Descrp      :   Players must complete a small scavenge event to unlock the saferoom     *
- *  Version     :   1.2.1b                                                                  *
+ *  Version     :   1.2.2                                                                   *
  *  Link        :   https://forums.alliedmods.net/showthread.php?t=333086                   *
  * ======================================================================================== *
  *                                                                                          *
@@ -56,7 +56,7 @@
 #define CL_LIGHTGREEN	"\x03"
 #define CL_GREEN		"\x05"
 
-#define PLUGIN_VERSION	"1.2.1b"
+#define PLUGIN_VERSION	"1.2.2"
 
 
 bool g_bAllow, g_bPluginOn, g_bAllowGamemode, g_bRoundStart, g_bPlayerSpawn, g_bSpawned, g_bEditMode, g_bInTime, g_bLoaded;
@@ -2029,6 +2029,8 @@ void CallForward(bool locked)
 /*============================================================================================
 									Changelog
 ----------------------------------------------------------------------------------------------
+* 1.2.2 (08-Oct-2022)
+	- Fixed problems with custom maps/addons that created more scavenge events, deleting their entities.
 * 1.2.1 (20-Jul-2021)
 	- Fixed bug on Dead Center, The Passing and The Last Stand finales, where map scavenges 
 		crashed after round restart.
